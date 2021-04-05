@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="51e0847b-0571-4d71-b093-5524d54e4af9" basePath="NeverGiveUp" >
+		<http:listener-connection host="0.0.0.0" port="8093" />
+	</http:listener-config>
+	<flow name="mule_techzoneFlow" doc:id="10a3601e-e324-41c0-99b6-a4beecc9eac1" >
+		<http:listener doc:name="CICD_LISTENER" doc:id="fb4a8006-6310-43ca-9a3a-796ce41c197a" config-ref="HTTP_Listener_config" path="/DeployPipe" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="0a39dfdd-40bd-419f-93cf-49a437799a48" message="**Success**"/>
+		<ee:transform doc:name="Transform Message" doc:id="3586fd46-c66c-459f-aa13-74502156c219" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Message":"Deploy in jenkins"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
